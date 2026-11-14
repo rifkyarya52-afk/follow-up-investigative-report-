@@ -41,15 +41,38 @@
       text-transform: uppercase;
     }
 
+    /* HEADER WITH STAMP */
     .doc-header {
-      text-align: center;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
       margin-bottom: 16px;
       border-bottom: 2px solid #0f172a;
-      padding-bottom: 10px;
+      padding-bottom: 12px;
+      gap: 10px;
+      flex-wrap: wrap;
     }
-    .doc-header img { width: 50px; height: auto; margin-bottom: 4px; }
-    .doc-header h1 { font-size: 15px; font-weight: bold; color: #0f172a; text-transform: uppercase; letter-spacing: 1px; }
-    .doc-header h2 { font-size: 11px; font-weight: bold; color: #334155; margin-top: 2px; text-transform: uppercase; letter-spacing: 0.5px; }
+    .brand-area { display: flex; align-items: center; gap: 12px; }
+    .brand-area img { width: 48px; height: auto; }
+    .brand-titles h1 { font-size: 14px; font-weight: bold; color: #0f172a; text-transform: uppercase; letter-spacing: 0.5px; }
+    .brand-titles h2 { font-size: 11px; font-weight: bold; color: #334155; margin-top: 2px; text-transform: uppercase; }
+
+    /* STAMP BADGE */
+    .stamp-box {
+      border: 2.5px solid #2563eb;
+      color: #2563eb;
+      padding: 6px 12px;
+      font-family: 'Courier New', Courier, monospace;
+      font-size: 12px;
+      font-weight: bold;
+      letter-spacing: 1px;
+      text-transform: uppercase;
+      transform: rotate(-2deg);
+      background: #ffffff;
+      text-align: center;
+    }
+    .stamp-box.closed { border-color: #16a34a; color: #16a34a; }
+    .stamp-box.warrant { border-color: #dc2626; color: #dc2626; }
 
     .grid-table {
       width: 100%;
@@ -122,7 +145,7 @@
     }
     .log-section textarea {
       width: 100%;
-      min-height: 80px;
+      min-height: 75px;
       border: 1px solid #cbd5e1;
       background: #fff;
       padding: 6px;
@@ -132,6 +155,7 @@
       resize: vertical;
       outline: none;
     }
+    .log-section textarea::placeholder { color: #94a3b8; font-style: italic; }
 
     .evidence-box {
       background: #f8fafc;
@@ -194,33 +218,47 @@
 <div class="form-container" id="capture-area">
   <div class="top-meta">
     <span>LOS SANTOS POLICE DEPARTMENT — RECORDS & INVESTIGATIONS DIVISION</span>
-    <span>FORM: LSPD 03.14 // 14/Nov/2026</span>
+    <span>FORM: LSPD 03.14</span>
   </div>
 
+  <!-- HEADER & TOP RIGHT STAMP -->
   <div class="doc-header">
-    <img src="https://i.imgur.com/3fSSqST.png" alt="LSPD Logo">
-    <h1>LOS SANTOS POLICE DEPARTMENT</h1>
-    <h2>Follow-Up Investigation Report</h2>
+    <div class="brand-area">
+      <img src="https://i.imgur.com/3fSSqST.png" alt="LSPD Logo">
+      <div class="brand-titles">
+        <h1>LOS SANTOS POLICE DEPARTMENT</h1>
+        <h2>Follow-Up Investigation Report</h2>
+      </div>
+    </div>
+    
+    <div style="display:flex; flex-direction:column; align-items:flex-end; gap:5px;">
+      <div class="stamp-box" id="stamp-badge">INVESTIGATION CONTINUED</div>
+      <select id="case_status_type" onchange="changeStatus(this.value)" style="font-size:10px; padding:2px; border:1px solid #94a3b8; background:#fff; cursor:pointer; font-weight:bold;">
+        <option value="INVESTIGATION CONTINUED">STATUS: INVESTIGATION CONTINUED</option>
+        <option value="OPEN">STATUS: OPEN</option>
+        <option value="CLOSED">STATUS: CLOSED</option>
+        <option value="WARRANT ISSUED">STATUS: WARRANT ISSUED</option>
+      </select>
+    </div>
   </div>
 
   <!-- I. ADMINISTRATIVE INFORMATION -->
   <div class="sec-title"><span>I. Administrative Information</span></div>
   <div class="grid-table">
     <div class="row-2">
-      <div class="cell"><label>DR Number (Case ID)</label><input type="text" id="dr_no" value="26-05-65"></div>
-      <div class="cell"><label>Date of this report</label><input type="text" id="report_date" value="14/Nov/2026"></div>
+      <div class="cell"><label>DR Number (Case ID)</label><input type="text" id="dr_no" placeholder="Contoh: 26-05-65"></div>
+      <div class="cell"><label>Date of this report</label><input type="text" id="report_date" placeholder="Contoh: 14/Nov/2026"></div>
     </div>
     <div class="row-2" style="border-top:1.5px solid #0f172a;">
       <div class="cell no-bottom" style="grid-column: span 2;">
         <label>Crime / Charge (One per line)</label>
-        <textarea id="crimes" style="width:100%; border:none; background:transparent; font-family:Arial; font-size:12px; outline:none; resize:vertical; min-height:40px;">1. Gang Enhancement / Participation in Criminal Street Gang (Florencia 13)
-2. Vandalism & Territorial Marking / Conspiracy</textarea>
+        <textarea id="crimes" style="width:100%; border:none; background:transparent; font-family:Arial; font-size:12px; outline:none; resize:vertical; min-height:35px;" placeholder="1. Gang Enhancement / Participation...&#10;2. Vandalism & Territorial Marking..."></textarea>
       </div>
     </div>
     <div class="row-2" style="border-top:1.5px solid #0f172a;">
       <div class="cell no-bottom" style="grid-column: span 2;">
         <label>Location of Occurrence</label>
-        <input type="text" id="occ_loc" value="Jefferson, East Los Santos, Artesia Avenue, and surrounding sectors">
+        <input type="text" id="occ_loc" placeholder="Contoh: Jefferson, East Los Santos...">
       </div>
     </div>
   </div>
@@ -229,46 +267,31 @@
   <div class="sec-title"><span>II. Involved Parties</span></div>
   <div class="grid-table">
     <div class="row-2">
-      <div class="cell"><label>Victim (V-1) and Status</label><input type="text" id="victim_info" value="Public Safety / Local Residents (Affected by territorial violence)"></div>
-      <div class="cell"><label>Suspect (S-1)</label><input type="text" id="suspect_info" value="Izellan Navarro (Primary subject, denies gang ties via 'Formula 1' alibi)"></div>
+      <div class="cell"><label>Victim (V-1) and Status</label><input type="text" id="victim_info" placeholder="Contoh: Public Safety / Local Residents"></div>
+      <div class="cell"><label>Suspect (S-1)</label><input type="text" id="suspect_info" placeholder="Contoh: Izellan Navarro (Primary subject...)"></div>
     </div>
     <div class="row-2" style="border-top:1.5px solid #0f172a;">
-      <div class="cell no-bottom" style="grid-column: span 2;"><label>Booking No / Ref ID</label><input type="text" id="booking_no" value="BK-0070"></div>
+      <div class="cell no-bottom" style="grid-column: span 2;"><label>Booking No / Ref ID</label><input type="text" id="booking_no" placeholder="Contoh: BK-0070"></div>
     </div>
   </div>
 
-  <!-- III. CASE STATUS -->
-  <div class="sec-title"><span>III. Case Status</span></div>
-  <div class="grid-table">
-    <div class="row-2">
-      <div class="cell no-bottom"><label>Current Status</label><input type="text" id="case_status_text" value="INVESTIGATION CONTINUED"></div>
-      <div class="cell no-bottom"><label>Status Marker</label>
-        <select id="case_status_type" style="width:100%; border:none; background:transparent; font-size:12px; font-weight:bold; outline:none;">
-          <option value="INVESTIGATION CONTINUED">INVESTIGATION CONTINUED</option>
-          <option value="OPEN">OPEN</option>
-          <option value="CLOSED">CLOSED</option>
-        </select>
-      </div>
-    </div>
-  </div>
-
-  <!-- IV. NARRATIVE / INVESTIGATIVE LOG -->
-  <div class="sec-title"><span>IV. Narrative / Investigative Log</span></div>
+  <!-- III. NARRATIVE / INVESTIGATIVE LOG -->
+  <div class="sec-title"><span>III. Narrative / Investigative Log</span></div>
   <div style="background:#fff; border:1.5px solid #0f172a; padding:12px; margin-bottom:12px;">
     
     <div class="log-section">
       <label>A. Crime Scene Re-evaluation / Physical Evidence</label>
-      <textarea id="log_a" placeholder="Jelaskan penemuan bukti fisik atau olah TKP lanjutan..."></textarea>
+      <textarea id="log_a" placeholder="Contoh: Mapping and photographic evidence gathered across key sectors..."></textarea>
     </div>
 
     <div class="log-section">
       <label>B. Canvassing & Witness Interviews / Interrogation</label>
-      <textarea id="log_b" placeholder="Jelaskan hasil interogasi saksi atau tersangka..."></textarea>
+      <textarea id="log_b" placeholder="Contoh: Formal interrogation conducted with subject..."></textarea>
     </div>
 
     <div class="log-section" style="margin-bottom:0;">
       <label>C. Victim / Hospital Follow-up / Additional Intel</label>
-      <textarea id="log_c" placeholder="Jelaskan perkembangan investigasi lanjutan lainnya..."></textarea>
+      <textarea id="log_c" placeholder="Contoh: Focus centered on intelligence gathering..."></textarea>
     </div>
 
   </div>
@@ -281,7 +304,7 @@
   <div id="evidence-list" style="margin-bottom: 12px;">
     <div class="evidence-box">
       <div style="display:flex; justify-content:space-between; align-items:center; gap:8px; margin-bottom:6px;">
-        <input type="text" class="ev-title" value="Exhibit 1 — Surveillance / Graffiti Mapping Photo" style="flex:1; border:none; font-weight:bold; font-size:12px; outline:none;">
+        <input type="text" class="ex-title" value="Exhibit 1 — Surveillance / Graffiti Mapping Photo" style="flex:1; border:none; font-weight:bold; font-size:12px; outline:none;">
         <button type="button" onclick="this.closest('.evidence-box').remove()" style="background:#dc2626; color:#fff; border:none; padding:2px 6px; font-size:10px; cursor:pointer;">✕</button>
       </div>
       <input type="file" accept="image/*" onchange="loadEvidenceImg(event, this)" style="font-size:11px; cursor:pointer; margin-bottom:4px;">
@@ -289,17 +312,16 @@
     </div>
   </div>
 
-  <!-- V. CONCLUSION & RECOMMENDATIONS -->
-  <div class="sec-title"><span>V. Conclusion & Recommendations</span></div>
+  <!-- IV. CONCLUSION & RECOMMENDATIONS -->
+  <div class="sec-title"><span>IV. Conclusion & Recommendations</span></div>
   <div class="grid-table">
     <div class="cell" style="border-bottom:1.5px solid #0f172a;">
       <label>Current Assessment & Next Steps / Action Items</label>
-      <textarea id="conclusion" style="width:100%; border:none; background:transparent; font-family:Arial; font-size:12px; outline:none; resize:vertical; min-height:70px;" placeholder="1. File format paperwork...
-2. Deploy undercover surveillance..."></textarea>
+      <textarea id="conclusion" style="width:100%; border:none; background:transparent; font-family:Arial; font-size:12px; outline:none; resize:vertical; min-height:65px;" placeholder="1. File format paperwork...&#10;2. Deploy undercover surveillance..."></textarea>
     </div>
     <div class="cell no-bottom">
       <label>Case Status (Conclusion)</label>
-      <input type="text" id="concl_status" value="OPEN">
+      <input type="text" id="concl_status" placeholder="OPEN / CLOSED">
     </div>
   </div>
 
@@ -307,9 +329,9 @@
   <div class="sec-title"><span>Reporting Detective</span></div>
   <div class="grid-table">
     <div class="row-3">
-      <div class="cell no-bottom"><label>Reporting Detective</label><input type="text" id="det_name" value="Frankie Cunningham"></div>
-      <div class="cell no-bottom"><label>Serial No.</label><input type="text" id="det_serial" value="79536"></div>
-      <div class="cell no-bottom"><label>Supervisor Approval</label><input type="text" id="sup_name" value="C. Miller"></div>
+      <div class="cell no-bottom"><label>Reporting Detective</label><input type="text" id="det_name" placeholder="Nama Detektif"></div>
+      <div class="cell no-bottom"><label>Serial No.</label><input type="text" id="det_serial" placeholder="Nomor Badge"></div>
+      <div class="cell no-bottom"><label>Supervisor Approval</label><input type="text" id="sup_name" placeholder="Nama Supervisor"></div>
     </div>
   </div>
 
@@ -321,12 +343,23 @@
 <!-- CONTROLS -->
 <div class="controls">
   <button class="act-btn btn-bbcode" onclick="copyBBCode()">📋 Copy BBCode</button>
-  <button class="act-btn btn-discord" onclick="💬 Copy Discord" onclick="copyDiscord()">💬 Copy Discord</button>
+  <button class="act-btn btn-discord" onclick="copyDiscord()">💬 Copy Discord</button>
   <button class="act-btn btn-png" onclick="downloadPNG()">📷 Simpan Gambar (PNG)</button>
   <button class="act-btn btn-print" onclick="window.print()">🖨️ Cetak / PDF</button>
 </div>
 
 <script>
+  function changeStatus(val) {
+    const box = document.getElementById("stamp-badge");
+    box.textContent = val;
+    box.className = "stamp-box";
+    if (val === "CLOSED") {
+      box.classList.add("closed");
+    } else if (val === "WARRANT ISSUED") {
+      box.classList.add("warrant");
+    }
+  }
+
   function loadEvidenceImg(event, input) {
     const file = event.target.files[0];
     if (!file) return;
@@ -347,7 +380,7 @@
     box.className = "evidence-box";
     box.innerHTML = `
       <div style="display:flex; justify-content:space-between; align-items:center; gap:8px; margin-bottom:6px;">
-        <input type="text" class="ev-title" value="Exhibit ${count} — Deskripsi Barang Bukti" style="flex:1; border:none; font-weight:bold; font-size:12px; outline:none;">
+        <input type="text" class="ex-title" value="Exhibit ${count} — Deskripsi Barang Bukti" style="flex:1; border:none; font-weight:bold; font-size:12px; outline:none;">
         <button type="button" onclick="this.closest('.evidence-box').remove()" style="background:#dc2626; color:#fff; border:none; padding:2px 6px; font-size:10px; cursor:pointer;">✕</button>
       </div>
       <input type="file" accept="image/*" onchange="loadEvidenceImg(event, this)" style="font-size:11px; cursor:pointer; margin-bottom:4px;">
