@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>LSPD — Follow-up Investigative Report</title>
+  <title>LSPD — Follow-Up Investigation Report</title>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
   <style>
     * { box-sizing: border-box; margin: 0; padding: 0; }
@@ -23,59 +23,49 @@
       border: 1.5px solid #0f172a;
       padding: 30px;
       box-shadow: 0 10px 25px rgba(0,0,0,0.5);
+      position: relative;
     }
     @media (max-width: 600px) {
       .form-container { padding: 15px; }
     }
-    .doc-header {
-      text-align: center;
-      margin-bottom: 15px;
-      border-bottom: 2px solid #0f172a;
-      padding-bottom: 12px;
-    }
-    .doc-header img { width: 50px; height: auto; margin-bottom: 4px; }
-    .doc-header h1 { font-size: 15px; font-weight: bold; color: #0f172a; text-transform: uppercase; }
-    .doc-header h2 { font-size: 12px; font-weight: bold; color: #1e3a8a; margin-top: 2px; text-transform: uppercase; letter-spacing: 1px; }
 
-    .status-strip {
+    .top-meta {
       display: flex;
       justify-content: space-between;
-      align-items: center;
-      background: #f8fafc;
-      border: 1px solid #cbd5e1;
-      padding: 8px 12px;
-      margin-bottom: 12px;
-    }
-    .status-pill {
-      font-size: 11px;
+      font-size: 9.5px;
       font-weight: bold;
-      padding: 3px 10px;
-      border: 2px solid #2563eb;
-      color: #2563eb;
-      background: #eff6ff;
+      color: #475569;
+      border-bottom: 1px solid #cbd5e1;
+      padding-bottom: 6px;
+      margin-bottom: 12px;
       text-transform: uppercase;
     }
-    .status-pill.closed {
-      border-color: #16a34a;
-      color: #16a34a;
-      background: #f0fdf4;
+
+    .doc-header {
+      text-align: center;
+      margin-bottom: 16px;
+      border-bottom: 2px solid #0f172a;
+      padding-bottom: 10px;
     }
+    .doc-header img { width: 50px; height: auto; margin-bottom: 4px; }
+    .doc-header h1 { font-size: 15px; font-weight: bold; color: #0f172a; text-transform: uppercase; letter-spacing: 1px; }
+    .doc-header h2 { font-size: 11px; font-weight: bold; color: #334155; margin-top: 2px; text-transform: uppercase; letter-spacing: 0.5px; }
 
     .grid-table {
       width: 100%;
-      border: 1px solid #94a3b8;
+      border: 1.5px solid #0f172a;
       background: #ffffff;
       margin-bottom: 12px;
     }
     .row-2 { display: grid; grid-template-columns: 1fr 1fr; }
-    .row-3 { display: grid; grid-template-columns: 1.2fr 0.9fr 0.9fr; }
+    .row-3 { display: grid; grid-template-columns: 1.5fr 1fr 1fr; }
     
     @media (max-width: 600px) {
       .row-2, .row-3 { grid-template-columns: 1fr; }
     }
 
     .cell {
-      padding: 6px 9px;
+      padding: 6px 10px;
       border-right: 1px solid #cbd5e1;
       border-bottom: 1px solid #cbd5e1;
     }
@@ -100,49 +90,47 @@
       outline: none;
     }
 
-    .sec-heading {
-      font-size: 10.5px;
+    .sec-title {
+      background-color: #0f172a;
+      color: #ffffff;
+      font-size: 10px;
       font-weight: bold;
-      color: #0f172a;
+      padding: 5px 10px;
       text-transform: uppercase;
-      margin: 12px 0 4px 0;
+      letter-spacing: 0.5px;
+      margin-top: 14px;
+      margin-bottom: -1px;
+      border: 1.5px solid #0f172a;
       display: flex;
       justify-content: space-between;
       align-items: center;
     }
-    .btn-add {
-      background: #334155;
-      color: #fff;
-      border: none;
-      font-size: 9.5px;
-      font-weight: bold;
-      padding: 2px 6px;
-      cursor: pointer;
-    }
 
-    .narrative-box {
-      background: #ffffff;
+    .log-section {
       border: 1px solid #94a3b8;
+      background: #f8fafc;
       padding: 10px;
-      margin-bottom: 12px;
+      margin-bottom: 8px;
     }
-    .narrative-box label {
+    .log-section label {
       display: block;
       font-size: 9.5px;
       font-weight: bold;
-      color: #0f172a;
+      color: #1e293b;
       text-transform: uppercase;
       margin-bottom: 4px;
     }
-    .narrative-box textarea {
+    .log-section textarea {
       width: 100%;
-      min-height: 110px;
-      border: none;
+      min-height: 80px;
+      border: 1px solid #cbd5e1;
+      background: #fff;
+      padding: 6px;
       font-family: Arial, sans-serif;
       font-size: 12px;
       line-height: 1.4;
-      outline: none;
       resize: vertical;
+      outline: none;
     }
 
     .evidence-box {
@@ -158,6 +146,17 @@
       display: none;
       border: 1px solid #cbd5e1;
       object-fit: contain;
+    }
+
+    .btn-add {
+      background: #334155;
+      color: #fff;
+      border: none;
+      font-size: 9.5px;
+      font-weight: bold;
+      padding: 2px 6px;
+      cursor: pointer;
+      border-radius: 2px;
     }
 
     .controls {
@@ -193,64 +192,96 @@
 <body>
 
 <div class="form-container" id="capture-area">
+  <div class="top-meta">
+    <span>LOS SANTOS POLICE DEPARTMENT — RECORDS & INVESTIGATIONS DIVISION</span>
+    <span>FORM: LSPD 03.14 // 14/Nov/2026</span>
+  </div>
+
   <div class="doc-header">
     <img src="https://i.imgur.com/3fSSqST.png" alt="LSPD Logo">
     <h1>LOS SANTOS POLICE DEPARTMENT</h1>
-    <h2>FOLLOW-UP INVESTIGATIVE REPORT</h2>
+    <h2>Follow-Up Investigation Report</h2>
   </div>
 
-  <!-- STATUS STRIP -->
-  <div class="status-strip">
-    <div style="display:flex; align-items:center; gap:8px;">
-      <span style="font-size:10px; font-weight:bold; color:#475569;">FOLLOW-UP STATUS:</span>
-      <span class="status-pill" id="status-pill">FOLLOW-UP ACTIVE</span>
-    </div>
-    <div style="display:flex; align-items:center; gap:6px;">
-      <label style="font-size:10px; font-weight:bold; color:#475569;">STATUS:</label>
-      <select id="case_status" onchange="changeStatus(this.value)" style="font-size:11px; padding:2px; border:1px solid #94a3b8; cursor:pointer;">
-        <option value="FOLLOW-UP ACTIVE">FOLLOW-UP ACTIVE</option>
-        <option value="CASE CLOSED">CASE CLOSED</option>
-        <option value="WARRANT ISSUED">WARRANT ISSUED</option>
-      </select>
-    </div>
-  </div>
-
-  <!-- CASE REFERENCE METADATA -->
-  <div class="sec-heading"><span>1. CASE REFERENCE INFORMATION</span></div>
+  <!-- I. ADMINISTRATIVE INFORMATION -->
+  <div class="sec-title"><span>I. Administrative Information</span></div>
   <div class="grid-table">
     <div class="row-2">
-      <div class="cell"><label>DR NUMBER / CASE REF</label><input type="text" id="dr_no" value="26-05-00"></div>
-      <div class="cell"><label>FOLLOW-UP DATE & TIME</label><input type="text" id="fu_date" value="14 November 2026 - 12:00"></div>
+      <div class="cell"><label>DR Number (Case ID)</label><input type="text" id="dr_no" value="26-05-65"></div>
+      <div class="cell"><label>Date of this report</label><input type="text" id="report_date" value="14/Nov/2026"></div>
     </div>
+    <div class="row-2" style="border-top:1.5px solid #0f172a;">
+      <div class="cell no-bottom" style="grid-column: span 2;">
+        <label>Crime / Charge (One per line)</label>
+        <textarea id="crimes" style="width:100%; border:none; background:transparent; font-family:Arial; font-size:12px; outline:none; resize:vertical; min-height:40px;">1. Gang Enhancement / Participation in Criminal Street Gang (Florencia 13)
+2. Vandalism & Territorial Marking / Conspiracy</textarea>
+      </div>
+    </div>
+    <div class="row-2" style="border-top:1.5px solid #0f172a;">
+      <div class="cell no-bottom" style="grid-column: span 2;">
+        <label>Location of Occurrence</label>
+        <input type="text" id="occ_loc" value="Jefferson, East Los Santos, Artesia Avenue, and surrounding sectors">
+      </div>
+    </div>
+  </div>
+
+  <!-- II. INVOLVED PARTIES -->
+  <div class="sec-title"><span>II. Involved Parties</span></div>
+  <div class="grid-table">
     <div class="row-2">
-      <div class="cell no-bottom"><label>INVESTIGATIVE DIVISION</label>
-        <select id="invest_div" style="font-size:11px; padding:2px; border:none; background:transparent; width:100%;">
-          <option>Harbor Detective Area</option>
-          <option>Harbor Gang Detective</option>
-          <option>Major Crime Division</option>
-          <option>Harbor Patrol Division</option>
+      <div class="cell"><label>Victim (V-1) and Status</label><input type="text" id="victim_info" value="Public Safety / Local Residents (Affected by territorial violence)"></div>
+      <div class="cell"><label>Suspect (S-1)</label><input type="text" id="suspect_info" value="Izellan Navarro (Primary subject, denies gang ties via 'Formula 1' alibi)"></div>
+    </div>
+    <div class="row-2" style="border-top:1.5px solid #0f172a;">
+      <div class="cell no-bottom" style="grid-column: span 2;"><label>Booking No / Ref ID</label><input type="text" id="booking_no" value="BK-0070"></div>
+    </div>
+  </div>
+
+  <!-- III. CASE STATUS -->
+  <div class="sec-title"><span>III. Case Status</span></div>
+  <div class="grid-table">
+    <div class="row-2">
+      <div class="cell no-bottom"><label>Current Status</label><input type="text" id="case_status_text" value="INVESTIGATION CONTINUED"></div>
+      <div class="cell no-bottom"><label>Status Marker</label>
+        <select id="case_status_type" style="width:100%; border:none; background:transparent; font-size:12px; font-weight:bold; outline:none;">
+          <option value="INVESTIGATION CONTINUED">INVESTIGATION CONTINUED</option>
+          <option value="OPEN">OPEN</option>
+          <option value="CLOSED">CLOSED</option>
         </select>
       </div>
-      <div class="cell no-bottom"><label>SUBJECT / CASE TITLE</label><input type="text" id="case_title" value="Investigation Follow-up on Aarón Howard"></div>
     </div>
   </div>
 
-  <!-- INVESTIGATIVE PROGRESS & NARRATIVE -->
-  <div class="sec-heading"><span>2. INVESTIGATIVE PROGRESS & NARRATIVE</span></div>
-  <div class="narrative-box">
-    <label>DETAILS OF FOLLOW-UP INVESTIGATION</label>
-    <textarea id="narrative" placeholder="Jelaskan perkembangan investigasi lanjutan, hasil interogasi saksi baru, pengecekan CCTV tambahan, atau tindakan operasional yang dilakukan..."></textarea>
+  <!-- IV. NARRATIVE / INVESTIGATIVE LOG -->
+  <div class="sec-title"><span>IV. Narrative / Investigative Log</span></div>
+  <div style="background:#fff; border:1.5px solid #0f172a; padding:12px; margin-bottom:12px;">
+    
+    <div class="log-section">
+      <label>A. Crime Scene Re-evaluation / Physical Evidence</label>
+      <textarea id="log_a" placeholder="Jelaskan penemuan bukti fisik atau olah TKP lanjutan..."></textarea>
+    </div>
+
+    <div class="log-section">
+      <label>B. Canvassing & Witness Interviews / Interrogation</label>
+      <textarea id="log_b" placeholder="Jelaskan hasil interogasi saksi atau tersangka..."></textarea>
+    </div>
+
+    <div class="log-section" style="margin-bottom:0;">
+      <label>C. Victim / Hospital Follow-up / Additional Intel</label>
+      <textarea id="log_c" placeholder="Jelaskan perkembangan investigasi lanjutan lainnya..."></textarea>
+    </div>
+
   </div>
 
-  <!-- NEW EVIDENCE / EXHIBIT -->
-  <div class="sec-heading">
-    <span>3. ADDITIONAL EVIDENCE / EXHIBIT</span>
-    <button type="button" class="btn-add" onclick="addEvidence()">+ Bukti Baru</button>
+  <!-- EVIDENCE / EXHIBIT UPLOAD -->
+  <div class="sec-title">
+    <span>Evidence & Exhibit Attachments</span>
+    <button type="button" class="btn-add" onclick="addExhibit()">+ Tambah Bukti</button>
   </div>
   <div id="evidence-list" style="margin-bottom: 12px;">
     <div class="evidence-box">
       <div style="display:flex; justify-content:space-between; align-items:center; gap:8px; margin-bottom:6px;">
-        <input type="text" class="ev-title" value="Exhibit 1 — Additional CCTV / Witness Statement" style="flex:1; border:none; font-weight:bold; font-size:12px; outline:none;">
+        <input type="text" class="ev-title" value="Exhibit 1 — Surveillance / Graffiti Mapping Photo" style="flex:1; border:none; font-weight:bold; font-size:12px; outline:none;">
         <button type="button" onclick="this.closest('.evidence-box').remove()" style="background:#dc2626; color:#fff; border:none; padding:2px 6px; font-size:10px; cursor:pointer;">✕</button>
       </div>
       <input type="file" accept="image/*" onchange="loadEvidenceImg(event, this)" style="font-size:11px; cursor:pointer; margin-bottom:4px;">
@@ -258,36 +289,44 @@
     </div>
   </div>
 
-  <!-- INVESTIGATING OFFICER / DETECTIVE SIGN-OFF -->
-  <div class="sec-heading"><span>4. REPORTING / INVESTIGATING OFFICER</span></div>
+  <!-- V. CONCLUSION & RECOMMENDATIONS -->
+  <div class="sec-title"><span>V. Conclusion & Recommendations</span></div>
+  <div class="grid-table">
+    <div class="cell" style="border-bottom:1.5px solid #0f172a;">
+      <label>Current Assessment & Next Steps / Action Items</label>
+      <textarea id="conclusion" style="width:100%; border:none; background:transparent; font-family:Arial; font-size:12px; outline:none; resize:vertical; min-height:70px;" placeholder="1. File format paperwork...
+2. Deploy undercover surveillance..."></textarea>
+    </div>
+    <div class="cell no-bottom">
+      <label>Case Status (Conclusion)</label>
+      <input type="text" id="concl_status" value="OPEN">
+    </div>
+  </div>
+
+  <!-- REPORTING DETECTIVE -->
+  <div class="sec-title"><span>Reporting Detective</span></div>
   <div class="grid-table">
     <div class="row-3">
-      <div class="cell no-bottom"><label>INVESTIGATING OFFICER (NAME & RANK)</label><input type="text" id="off_name" value="Detective / Police Officer Name"></div>
-      <div class="cell no-bottom"><label>BADGE / SERIAL NO.</label><input type="text" id="off_serial" value="00000"></div>
-      <div class="cell no-bottom"><label>DIVISION</label><input type="text" id="off_div" value="Harbor Detective Area"></div>
+      <div class="cell no-bottom"><label>Reporting Detective</label><input type="text" id="det_name" value="Frankie Cunningham"></div>
+      <div class="cell no-bottom"><label>Serial No.</label><input type="text" id="det_serial" value="79536"></div>
+      <div class="cell no-bottom"><label>Supervisor Approval</label><input type="text" id="sup_name" value="C. Miller"></div>
     </div>
+  </div>
+
+  <div style="font-size:8.5px; color:#64748b; margin-top:10px; text-align:center; font-style:italic;">
+    Forgery of this document is a criminal offense. Valid only when officially stamped by the LSPD Police Licensing Division.
   </div>
 </div>
 
 <!-- CONTROLS -->
 <div class="controls">
   <button class="act-btn btn-bbcode" onclick="copyBBCode()">📋 Copy BBCode</button>
-  <button class="act-btn btn-discord" onclick="copyDiscord()">💬 Copy Discord</button>
+  <button class="act-btn btn-discord" onclick="💬 Copy Discord" onclick="copyDiscord()">💬 Copy Discord</button>
   <button class="act-btn btn-png" onclick="downloadPNG()">📷 Simpan Gambar (PNG)</button>
   <button class="act-btn btn-print" onclick="window.print()">🖨️ Cetak / PDF</button>
 </div>
 
 <script>
-  function changeStatus(val) {
-    const pill = document.getElementById("status-pill");
-    pill.textContent = val;
-    if (val === "CASE CLOSED") {
-      pill.className = "status-pill closed";
-    } else {
-      pill.className = "status-pill";
-    }
-  }
-
   function loadEvidenceImg(event, input) {
     const file = event.target.files[0];
     if (!file) return;
@@ -301,7 +340,7 @@
     reader.readAsDataURL(file);
   }
 
-  function addEvidence() {
+  function addExhibit() {
     const list = document.getElementById("evidence-list");
     const count = list.querySelectorAll(".evidence-box").length + 1;
     const box = document.createElement("div");
@@ -318,56 +357,75 @@
   }
 
   function copyDiscord() {
-    const status = document.getElementById("case_status").value;
     let evs = "";
     document.querySelectorAll(".evidence-box").forEach(box => {
       const title = box.querySelector(".ev-title").value || "-";
       evs += `> - ${title}\n`;
     });
 
-    const txt = `**LOS SANTOS POLICE DEPARTMENT — FOLLOW-UP INVESTIGATIVE REPORT**
-**STATUS:** \`${status}\`
+    const txt = `**LOS SANTOS POLICE DEPARTMENT — FOLLOW-UP INVESTIGATION REPORT**
+\`FORM: LSPD 03.14\` | **DR:** ${document.getElementById("dr_no").value || "-"} | **Status:** \`${document.getElementById("case_status_type").value}\`
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-* **DR Number / Ref:** ${document.getElementById("dr_no").value || "-"}
-* **Date & Time:** ${document.getElementById("fu_date").value || "-"}
-* **Subject:** ${document.getElementById("case_title").value || "-"}
-* **Division:** ${document.getElementById("invest_div").value}
+* **Date:** ${document.getElementById("report_date").value || "-"}
+* **Location:** ${document.getElementById("occ_loc").value || "-"}
+* **Victim / Status:** ${document.getElementById("victim_info").value || "-"}
+* **Suspect:** ${document.getElementById("suspect_info").value || "-"}
 
-**[INVESTIGATIVE PROGRESS]**
-${document.getElementById("narrative").value || "-"}
+**[NARRATIVE / LOG]**
+* **A. Crime Scene:** ${document.getElementById("log_a").value || "-"}
+* **B. Canvassing:** ${document.getElementById("log_b").value || "-"}
+* **C. Follow-up:** ${document.getElementById("log_c").value || "-"}
 
-**[ADDITIONAL EVIDENCE]**
-${evs || "> -\n"}
-**[INVESTIGATING OFFICER]**
-* **Name:** ${document.getElementById("off_name").value || "-"} (#${document.getElementById("off_serial").value || "-"}) — ${document.getElementById("off_div").value || "-"}`;
+**[CONCLUSION & NEXT STEPS]**
+${document.getElementById("conclusion").value || "-"}
+
+**[REPORTING DETECTIVE]**
+* **Detective:** ${document.getElementById("det_name").value || "-"} (#${document.getElementById("det_serial").value || "-"})
+* **Supervisor:** ${document.getElementById("sup_name").value || "-"}`;
 
     navigator.clipboard.writeText(txt).then(() => alert("Format Discord berhasil disalin!"));
   }
 
   function copyBBCode() {
-    const status = document.getElementById("case_status").value;
     let evs = "";
     document.querySelectorAll(".evidence-box").forEach(box => {
       const title = box.querySelector(".ev-title").value || "-";
-      evs += `[spoiler=${title}]Lampirkan Link Foto Disini[/spoiler]\n`;
+      evs += `[spoiler=${title}]Link Foto Bukti[/spoiler]\n`;
     });
 
     const bb = `[divbox=white][center][img]https://i.imgur.com/3fSSqST.png[/img]
 [b]LOS SANTOS POLICE DEPARTMENT[/b]
-[b]FOLLOW-UP INVESTIGATIVE REPORT[/b]
-[b]STATUS: ${status}[/b][/center]
+[b]RECORDS & INVESTIGATIONS DIVISION[/b]
+[b]FOLLOW-UP INVESTIGATION REPORT (FORM: LSPD 03.14)[/b][/center]
 
-[b]DR NUMBER / REF:[/b] ${document.getElementById("dr_no").value || "-"} | [b]DATE:[/b] ${document.getElementById("fu_date").value || "-"}
-[b]SUBJECT:[/b] ${document.getElementById("case_title").value || "-"}
-[b]DIVISION:[/b] ${document.getElementById("invest_div").value}
+[b]DR Number:[/b] ${document.getElementById("dr_no").value || "-"} | [b]Date:[/b] ${document.getElementById("report_date").value || "-"}
+[b]Crime/Charge:[/b] ${document.getElementById("crimes").value || "-"}
+[b]Location:[/b] ${document.getElementById("occ_loc").value || "-"}
 
-[b]INVESTIGATIVE PROGRESS & NARRATIVE[/b]
-${document.getElementById("narrative").value || "-"}
+[b]INVOLVED PARTIES[/b]
+[b]Victim:[/b] ${document.getElementById("victim_info").value || "-"}
+[b]Suspect:[/b] ${document.getElementById("suspect_info").value || "-"} | [b]Booking No:[/b] ${document.getElementById("booking_no").value || "-"}
 
-[b]ADDITIONAL EVIDENCE / EXHIBIT[/b]
+[b]CASE STATUS:[/b] ${document.getElementById("case_status_type").value}
+
+[b]NARRATIVE / INVESTIGATIVE LOG[/b]
+[b]A. Crime scene re-evaluation:[/b]
+${document.getElementById("log_a").value || "-"}
+
+[b]B. Canvassing & witness interviews:[/b]
+${document.getElementById("log_b").value || "-"}
+
+[b]C. Victim / hospital follow-up:[/b]
+${document.getElementById("log_c").value || "-"}
+
+[b]ATTACHED EVIDENCE:[/b]
 ${evs}
 
-[b]INVESTIGATING OFFICER:[/b] ${document.getElementById("off_name").value || "-"} (${document.getElementById("off_serial").value || "-"}) — ${document.getElementById("off_div").value || "-"}[/divbox]`;
+[b]CONCLUSION & RECOMMENDATIONS[/b]
+${document.getElementById("conclusion").value || "-"}
+
+[b]Reporting Detective:[/b] ${document.getElementById("det_name").value || "-"} (#${document.getElementById("det_serial").value || "-"})
+[b]Supervisor Approval:[/b] ${document.getElementById("sup_name").value || "-"}[/divbox]`;
 
     navigator.clipboard.writeText(bb).then(() => alert("Format BBCode Forum berhasil disalin!"));
   }
@@ -376,7 +434,7 @@ ${evs}
     const area = document.getElementById("capture-area");
     html2canvas(area, { scale: 2, useCORS: true, allowTaint: true }).then(canvas => {
       const link = document.createElement("a");
-      link.download = "LSPD-FollowUp-Report.png";
+      link.download = "LSPD-FollowUp-Investigation-Report.png";
       link.href = canvas.toDataURL("image/png");
       link.click();
     }).catch(err => {
