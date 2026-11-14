@@ -1,0 +1,390 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>LSPD — Follow-up Investigative Report</title>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      background-color: #1a1d24;
+      font-family: Arial, Helvetica, sans-serif;
+      color: #1e293b;
+      padding: 20px 10px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+    .form-container {
+      width: 100%;
+      max-width: 820px;
+      background-color: #ffffff;
+      border: 1.5px solid #0f172a;
+      padding: 30px;
+      box-shadow: 0 10px 25px rgba(0,0,0,0.5);
+    }
+    @media (max-width: 600px) {
+      .form-container { padding: 15px; }
+    }
+    .doc-header {
+      text-align: center;
+      margin-bottom: 15px;
+      border-bottom: 2px solid #0f172a;
+      padding-bottom: 12px;
+    }
+    .doc-header img { width: 50px; height: auto; margin-bottom: 4px; }
+    .doc-header h1 { font-size: 15px; font-weight: bold; color: #0f172a; text-transform: uppercase; }
+    .doc-header h2 { font-size: 12px; font-weight: bold; color: #1e3a8a; margin-top: 2px; text-transform: uppercase; letter-spacing: 1px; }
+
+    .status-strip {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      background: #f8fafc;
+      border: 1px solid #cbd5e1;
+      padding: 8px 12px;
+      margin-bottom: 12px;
+    }
+    .status-pill {
+      font-size: 11px;
+      font-weight: bold;
+      padding: 3px 10px;
+      border: 2px solid #2563eb;
+      color: #2563eb;
+      background: #eff6ff;
+      text-transform: uppercase;
+    }
+    .status-pill.closed {
+      border-color: #16a34a;
+      color: #16a34a;
+      background: #f0fdf4;
+    }
+
+    .grid-table {
+      width: 100%;
+      border: 1px solid #94a3b8;
+      background: #ffffff;
+      margin-bottom: 12px;
+    }
+    .row-2 { display: grid; grid-template-columns: 1fr 1fr; }
+    .row-3 { display: grid; grid-template-columns: 1.2fr 0.9fr 0.9fr; }
+    
+    @media (max-width: 600px) {
+      .row-2, .row-3 { grid-template-columns: 1fr; }
+    }
+
+    .cell {
+      padding: 6px 9px;
+      border-right: 1px solid #cbd5e1;
+      border-bottom: 1px solid #cbd5e1;
+    }
+    .cell:last-child { border-right: none; }
+    .no-bottom { border-bottom: none; }
+
+    .cell label {
+      display: block;
+      font-size: 9px;
+      font-weight: bold;
+      color: #475569;
+      text-transform: uppercase;
+      margin-bottom: 2px;
+    }
+    .cell input, .cell select, .cell textarea {
+      width: 100%;
+      border: none;
+      background: transparent;
+      font-family: Arial, sans-serif;
+      font-size: 12px;
+      color: #0f172a;
+      outline: none;
+    }
+
+    .sec-heading {
+      font-size: 10.5px;
+      font-weight: bold;
+      color: #0f172a;
+      text-transform: uppercase;
+      margin: 12px 0 4px 0;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    .btn-add {
+      background: #334155;
+      color: #fff;
+      border: none;
+      font-size: 9.5px;
+      font-weight: bold;
+      padding: 2px 6px;
+      cursor: pointer;
+    }
+
+    .narrative-box {
+      background: #ffffff;
+      border: 1px solid #94a3b8;
+      padding: 10px;
+      margin-bottom: 12px;
+    }
+    .narrative-box label {
+      display: block;
+      font-size: 9.5px;
+      font-weight: bold;
+      color: #0f172a;
+      text-transform: uppercase;
+      margin-bottom: 4px;
+    }
+    .narrative-box textarea {
+      width: 100%;
+      min-height: 110px;
+      border: none;
+      font-family: Arial, sans-serif;
+      font-size: 12px;
+      line-height: 1.4;
+      outline: none;
+      resize: vertical;
+    }
+
+    .evidence-box {
+      background: #f8fafc;
+      border: 1px solid #cbd5e1;
+      padding: 8px;
+      margin-bottom: 6px;
+    }
+    .evidence-preview {
+      max-width: 100%;
+      max-height: 200px;
+      margin-top: 6px;
+      display: none;
+      border: 1px solid #cbd5e1;
+      object-fit: contain;
+    }
+
+    .controls {
+      width: 100%;
+      max-width: 820px;
+      margin-top: 15px;
+      display: flex;
+      gap: 8px;
+      justify-content: center;
+      flex-wrap: wrap;
+    }
+    .act-btn {
+      font-size: 11.5px;
+      font-weight: bold;
+      padding: 9px 14px;
+      border: none;
+      border-radius: 4px;
+      cursor: pointer;
+      color: #fff;
+    }
+    .btn-bbcode { background: #0f172a; }
+    .btn-discord { background: #4f46e5; }
+    .btn-png { background: #d97706; }
+    .btn-print { background: #16a34a; }
+
+    @media print {
+      body { background: #fff; padding: 0; }
+      .form-container { box-shadow: none; border: none; padding: 0; }
+      .controls { display: none; }
+    }
+  </style>
+</head>
+<body>
+
+<div class="form-container" id="capture-area">
+  <div class="doc-header">
+    <img src="https://i.imgur.com/3fSSqST.png" alt="LSPD Logo">
+    <h1>LOS SANTOS POLICE DEPARTMENT</h1>
+    <h2>FOLLOW-UP INVESTIGATIVE REPORT</h2>
+  </div>
+
+  <!-- STATUS STRIP -->
+  <div class="status-strip">
+    <div style="display:flex; align-items:center; gap:8px;">
+      <span style="font-size:10px; font-weight:bold; color:#475569;">FOLLOW-UP STATUS:</span>
+      <span class="status-pill" id="status-pill">FOLLOW-UP ACTIVE</span>
+    </div>
+    <div style="display:flex; align-items:center; gap:6px;">
+      <label style="font-size:10px; font-weight:bold; color:#475569;">STATUS:</label>
+      <select id="case_status" onchange="changeStatus(this.value)" style="font-size:11px; padding:2px; border:1px solid #94a3b8; cursor:pointer;">
+        <option value="FOLLOW-UP ACTIVE">FOLLOW-UP ACTIVE</option>
+        <option value="CASE CLOSED">CASE CLOSED</option>
+        <option value="WARRANT ISSUED">WARRANT ISSUED</option>
+      </select>
+    </div>
+  </div>
+
+  <!-- CASE REFERENCE METADATA -->
+  <div class="sec-heading"><span>1. CASE REFERENCE INFORMATION</span></div>
+  <div class="grid-table">
+    <div class="row-2">
+      <div class="cell"><label>DR NUMBER / CASE REF</label><input type="text" id="dr_no" value="26-05-00"></div>
+      <div class="cell"><label>FOLLOW-UP DATE & TIME</label><input type="text" id="fu_date" value="14 November 2026 - 12:00"></div>
+    </div>
+    <div class="row-2">
+      <div class="cell no-bottom"><label>INVESTIGATIVE DIVISION</label>
+        <select id="invest_div" style="font-size:11px; padding:2px; border:none; background:transparent; width:100%;">
+          <option>Harbor Detective Area</option>
+          <option>Harbor Gang Detective</option>
+          <option>Major Crime Division</option>
+          <option>Harbor Patrol Division</option>
+        </select>
+      </div>
+      <div class="cell no-bottom"><label>SUBJECT / CASE TITLE</label><input type="text" id="case_title" value="Investigation Follow-up on Aarón Howard"></div>
+    </div>
+  </div>
+
+  <!-- INVESTIGATIVE PROGRESS & NARRATIVE -->
+  <div class="sec-heading"><span>2. INVESTIGATIVE PROGRESS & NARRATIVE</span></div>
+  <div class="narrative-box">
+    <label>DETAILS OF FOLLOW-UP INVESTIGATION</label>
+    <textarea id="narrative" placeholder="Jelaskan perkembangan investigasi lanjutan, hasil interogasi saksi baru, pengecekan CCTV tambahan, atau tindakan operasional yang dilakukan..."></textarea>
+  </div>
+
+  <!-- NEW EVIDENCE / EXHIBIT -->
+  <div class="sec-heading">
+    <span>3. ADDITIONAL EVIDENCE / EXHIBIT</span>
+    <button type="button" class="btn-add" onclick="addEvidence()">+ Bukti Baru</button>
+  </div>
+  <div id="evidence-list" style="margin-bottom: 12px;">
+    <div class="evidence-box">
+      <div style="display:flex; justify-content:space-between; align-items:center; gap:8px; margin-bottom:6px;">
+        <input type="text" class="ev-title" value="Exhibit 1 — Additional CCTV / Witness Statement" style="flex:1; border:none; font-weight:bold; font-size:12px; outline:none;">
+        <button type="button" onclick="this.closest('.evidence-box').remove()" style="background:#dc2626; color:#fff; border:none; padding:2px 6px; font-size:10px; cursor:pointer;">✕</button>
+      </div>
+      <input type="file" accept="image/*" onchange="loadEvidenceImg(event, this)" style="font-size:11px; cursor:pointer; margin-bottom:4px;">
+      <img class="evidence-preview" src="" alt="Preview">
+    </div>
+  </div>
+
+  <!-- INVESTIGATING OFFICER / DETECTIVE SIGN-OFF -->
+  <div class="sec-heading"><span>4. REPORTING / INVESTIGATING OFFICER</span></div>
+  <div class="grid-table">
+    <div class="row-3">
+      <div class="cell no-bottom"><label>INVESTIGATING OFFICER (NAME & RANK)</label><input type="text" id="off_name" value="Detective / Police Officer Name"></div>
+      <div class="cell no-bottom"><label>BADGE / SERIAL NO.</label><input type="text" id="off_serial" value="00000"></div>
+      <div class="cell no-bottom"><label>DIVISION</label><input type="text" id="off_div" value="Harbor Detective Area"></div>
+    </div>
+  </div>
+</div>
+
+<!-- CONTROLS -->
+<div class="controls">
+  <button class="act-btn btn-bbcode" onclick="copyBBCode()">📋 Copy BBCode</button>
+  <button class="act-btn btn-discord" onclick="copyDiscord()">💬 Copy Discord</button>
+  <button class="act-btn btn-png" onclick="downloadPNG()">📷 Simpan Gambar (PNG)</button>
+  <button class="act-btn btn-print" onclick="window.print()">🖨️ Cetak / PDF</button>
+</div>
+
+<script>
+  function changeStatus(val) {
+    const pill = document.getElementById("status-pill");
+    pill.textContent = val;
+    if (val === "CASE CLOSED") {
+      pill.className = "status-pill closed";
+    } else {
+      pill.className = "status-pill";
+    }
+  }
+
+  function loadEvidenceImg(event, input) {
+    const file = event.target.files[0];
+    if (!file) return;
+    const reader = new FileReader();
+    reader.onload = function(e) {
+      const box = input.closest(".evidence-box");
+      const img = box.querySelector(".evidence-preview");
+      img.src = e.target.result;
+      img.style.display = "block";
+    };
+    reader.readAsDataURL(file);
+  }
+
+  function addEvidence() {
+    const list = document.getElementById("evidence-list");
+    const count = list.querySelectorAll(".evidence-box").length + 1;
+    const box = document.createElement("div");
+    box.className = "evidence-box";
+    box.innerHTML = `
+      <div style="display:flex; justify-content:space-between; align-items:center; gap:8px; margin-bottom:6px;">
+        <input type="text" class="ev-title" value="Exhibit ${count} — Deskripsi Barang Bukti" style="flex:1; border:none; font-weight:bold; font-size:12px; outline:none;">
+        <button type="button" onclick="this.closest('.evidence-box').remove()" style="background:#dc2626; color:#fff; border:none; padding:2px 6px; font-size:10px; cursor:pointer;">✕</button>
+      </div>
+      <input type="file" accept="image/*" onchange="loadEvidenceImg(event, this)" style="font-size:11px; cursor:pointer; margin-bottom:4px;">
+      <img class="evidence-preview" src="" alt="Preview">
+    `;
+    list.appendChild(box);
+  }
+
+  function copyDiscord() {
+    const status = document.getElementById("case_status").value;
+    let evs = "";
+    document.querySelectorAll(".evidence-box").forEach(box => {
+      const title = box.querySelector(".ev-title").value || "-";
+      evs += `> - ${title}\n`;
+    });
+
+    const txt = `**LOS SANTOS POLICE DEPARTMENT — FOLLOW-UP INVESTIGATIVE REPORT**
+**STATUS:** \`${status}\`
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+* **DR Number / Ref:** ${document.getElementById("dr_no").value || "-"}
+* **Date & Time:** ${document.getElementById("fu_date").value || "-"}
+* **Subject:** ${document.getElementById("case_title").value || "-"}
+* **Division:** ${document.getElementById("invest_div").value}
+
+**[INVESTIGATIVE PROGRESS]**
+${document.getElementById("narrative").value || "-"}
+
+**[ADDITIONAL EVIDENCE]**
+${evs || "> -\n"}
+**[INVESTIGATING OFFICER]**
+* **Name:** ${document.getElementById("off_name").value || "-"} (#${document.getElementById("off_serial").value || "-"}) — ${document.getElementById("off_div").value || "-"}`;
+
+    navigator.clipboard.writeText(txt).then(() => alert("Format Discord berhasil disalin!"));
+  }
+
+  function copyBBCode() {
+    const status = document.getElementById("case_status").value;
+    let evs = "";
+    document.querySelectorAll(".evidence-box").forEach(box => {
+      const title = box.querySelector(".ev-title").value || "-";
+      evs += `[spoiler=${title}]Lampirkan Link Foto Disini[/spoiler]\n`;
+    });
+
+    const bb = `[divbox=white][center][img]https://i.imgur.com/3fSSqST.png[/img]
+[b]LOS SANTOS POLICE DEPARTMENT[/b]
+[b]FOLLOW-UP INVESTIGATIVE REPORT[/b]
+[b]STATUS: ${status}[/b][/center]
+
+[b]DR NUMBER / REF:[/b] ${document.getElementById("dr_no").value || "-"} | [b]DATE:[/b] ${document.getElementById("fu_date").value || "-"}
+[b]SUBJECT:[/b] ${document.getElementById("case_title").value || "-"}
+[b]DIVISION:[/b] ${document.getElementById("invest_div").value}
+
+[b]INVESTIGATIVE PROGRESS & NARRATIVE[/b]
+${document.getElementById("narrative").value || "-"}
+
+[b]ADDITIONAL EVIDENCE / EXHIBIT[/b]
+${evs}
+
+[b]INVESTIGATING OFFICER:[/b] ${document.getElementById("off_name").value || "-"} (${document.getElementById("off_serial").value || "-"}) — ${document.getElementById("off_div").value || "-"}[/divbox]`;
+
+    navigator.clipboard.writeText(bb).then(() => alert("Format BBCode Forum berhasil disalin!"));
+  }
+
+  function downloadPNG() {
+    const area = document.getElementById("capture-area");
+    html2canvas(area, { scale: 2, useCORS: true, allowTaint: true }).then(canvas => {
+      const link = document.createElement("a");
+      link.download = "LSPD-FollowUp-Report.png";
+      link.href = canvas.toDataURL("image/png");
+      link.click();
+    }).catch(err => {
+      alert("Gagal mengunduh gambar. Silakan gunakan tombol Cetak / PDF.");
+      console.error(err);
+    });
+  }
+</script>
+
+</body>
+</html>
